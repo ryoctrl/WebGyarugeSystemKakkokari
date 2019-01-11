@@ -25,19 +25,30 @@
     </head>
     <body>
         <div id="background">
-            <select id="serif-select" name="serif">
-                <% if(serifs && serifs.length > 0){%>
-                <option value="-1">Stop</option>
-                <% for(const serif of serifs) { %>
-                <option value="<%=serif.path%>"><%=serif.name%> by <%= speakers[serif.speaker_id - 1].name%></option>
-                <%}%>
-                <%} else { %>
-                <option value="-1">登録されているセリフがありません.</option>
-                <%}%>
-            </select>
-            <input type="range" name="num" min="0" max="20" step="1" value="10" onchange="changeTextSpeed(this.value)">
-            <span id="speed-val">10</span>
-            <button id="playbutton"onclick="" value="Play">Play</button>
+            <div id="err"></div>
+            <div id="select-elements">
+                <select id="serif-select" name="serif">
+                    <% if(serifs && serifs.length > 0){%>
+                    <option value="-1">Stop</option>
+                    <% for(const serif of serifs) { %>
+                    <option value="<%=serif.path%>"><%=serif.name%> by <%= speakers[serif.speaker_id - 1].name%></option>
+                    <%}%>
+                    <%} else { %>
+                    <option value="-1">登録されているセリフがありません.</option>
+                    <%}%>
+                </select>
+                <button id="playbutton"onclick="" value="Play">Play</button>
+            </div>
+            <div id="speed-elements">
+                <span class="ui-text" id="speed-text">テキスト速度:</span>
+                <span class="ui-text" id="speed-val">10</span>
+                <input id="speed-slider" type="range" name="num" min="0" max="20" step="1" value="10">
+            </div>
+            <div id="volume-elements">
+                <span class="ui-text" id="volume-text">音量:</span>
+                <span class="ui-text" id="volume-val">50</span>
+                <input id="volume-slider" type="range" name="volume" min="0" max="100" step="1" value="50">
+            </div>
             <div id="char"></div>
             <div id="serif" style="display: none;">
                 <p id="speaker-name"></p>

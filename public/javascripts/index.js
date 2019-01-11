@@ -21,7 +21,6 @@ const pageMaxCharacters = lineCharacters * 3;
 
 
 window.addEventListener('load', function() {
-    document.addEventListener('touchmove', function(e) { e.preventDefault();}, {passive: false});
     serifSelectEl = document.getElementById('serif-select');
     serifSelectEl.addEventListener('change', loadAndPlay);
     charaEl = document.getElementById('char');
@@ -29,6 +28,22 @@ window.addEventListener('load', function() {
     serifPanel = document.getElementById('serif');
     namePanel = document.getElementById('speaker-name');
     playButton = document.getElementById('playbutton');
+    const speedSlider = document.getElementById('speed-slider');
+    speedSlider.addEventListener('input', function(e) {
+        e = e.target;
+        changeTextSpeed(e.value);
+    });
+    const volumeSlider = document.getElementById('volume-slider');
+    volumeSlider.addEventListener('input', function(e) {
+        e = e.target;
+        changeVolume(e.value);
+    });
+    document.addEventListener('touchmove', function(e) { 
+        if(e.target === speedSlider || e.target === volumeSlider) {
+            return;
+        }
+        e.preventDefault();
+    }, {passive: false});
 });
 
 function loadAndPlay() {
@@ -106,6 +121,11 @@ function changeTextSpeed(value) {
         if(textSpeed === 0) return;
         interval = setInterval(intervalFunc, textSpeed);
     }
+}
+
+function changeVolume(value) {
+    document.getElementById('volume-val').innerHTML = value;
+    wa.changeVolume(value);
 }
 
 function completeDisplay(text) {

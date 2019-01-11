@@ -2,6 +2,7 @@
     "short_name": "Yukari",
     "name": "Yukari",
     "display": "standalone",
+    "orientation": "portrait",
     "icons": [
         {
             "src": "images/48yukari.png",

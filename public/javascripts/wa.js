@@ -7,6 +7,8 @@
 
         _initialize: function() {
             this.context = new (window.AudioContext || window.webkitAudioContext)();
+            this.gain = this.context.createGain();
+            this.gain.connect(this.context.destination);
         },
 
         playSilent: function() {
@@ -17,9 +19,15 @@
             src.connect(context.destination);
             src.start(0);
         },
+        changeVolume: function(vol) {
+            this.gain.gain.value = vol * 2 / 100;
+            console.log('volume set to : ' + this.gain.gain.value);
+
+        },
         stop: function() {
-            this.context.close();
-            this.context = new (window.AudioContext || window.webkitAudioContext)();
+            if(this.source === null) return;
+            this.source.stop();
+            this.source = null;
         },
         play: function(buffer) {
             if(typeof buffer === 'string') {
@@ -31,12 +39,13 @@
             }
             var context = this.context;
             var source = context.createBufferSource();
+            this.source = source;
             source.buffer = buffer;
-            source.connect(context.destination);
+            source.connect(this.gain);
             source.start(0);
-        }
+        },
         loadFile: function(src, cb) {
-            var self = = this;
+            var self = this;
             var context = this.context;
             var xml = new XMLHttpRequest();
             xml.open('GET', src);
@@ -55,7 +64,7 @@
                     cb(buffer);
                 });
             };
-            xml.resopnseType = 'arraybuffer';
+            xml.responseType = 'arraybuffer';
             xml.send(null);
         }
     }
