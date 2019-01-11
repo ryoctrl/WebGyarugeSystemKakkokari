@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <link rel="stylesheet" href="/stylesheets/admin.css" />
+        <script type="text/javascript" src="/javascripts/admin.js"></script>
+    </head>
+    <body>
+        <div id="register-panel">
+            <div id="register-serif" class="register">
+                <p>新規セリフ登録</p>
+                <form method="POST" enctype="multipart/form-data" action="/serif/create">
+                    <div class="input-row">
+                        <label for="update">上書き</label>
+                        <input id="update" type="checkbox">
+                        <label for="serif-id">セリフID</label>
+                        <select id="serif-id" name="id">
+                            <option value="-1">選択してください</option>
+                            <% for(const serif of serifs) {%>
+                            <option value="<%=serif.id%>"><%=serif.id%></option>
+                            <%}%>
+                        </select>
+
+                    </div>
+                    <div class="input-row">
+                        <label class="input-col" for="name">タイトル</label>
+                        <input class="input-col" id="name" type="text" name="name">
+                    </div>
+                    <div class="input-row">
+                        <label class="input-col" for="serif-speaker">話者</label>
+                        <select class="input-col" id="serif-speaker" name="speaker">
+                            <option value="-1">選択してください</option>
+                            <% for ( const speaker of speakers) { %>
+                            <option value="<%=speaker.id%>"><%= speaker.name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="input-row">
+                        <label class="input-col" for="serif-picture">立ち絵</label>
+                        <select class="input-col" id="serif-picture" name="picture">
+                            <option value="-1">選択してください</option>
+                            <% for(const picture of pictures) { %>
+                            <option value="<%=picture.id%>"><%= picture.name %></option>
+                            <%}%>
+                        </select>
+                    </div>
+                    <div class="input-row">
+                        <label class="input-col" for="audio">flacファイル</label>
+                        <input class="input-col" id="audio" type="file" name="audio" accept=".flac">
+                    </div>
+                    <div class="input-row">
+                        <input class="input-col button" type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+            <div id="register-speaker" class="register" >
+                <p>新規話者登録</p>
+                <form method="POST" action="/serif/speaker/create">
+                    <div class="input-row">
+                        <label class="input-col" for="speaker-name">話者名</label>
+                        <input id="speaker-name" type="text" name="name">
+                    </div>
+                    <div class="input-row">
+                        <input class="input-col button" type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+            <div id="register-picture" class="register">
+                <p>新規立ち絵登録</p>
+                <form method="POST" enctype="multipart/form-data" action="/serif/picture/create">
+                    <div class="input-row">
+                        <label class="input-col" for="picture-name">立ち絵タイトル</label>
+                        <input id="picture-name" type="text" name="name">
+                    </div>
+                    <div class="input-row">
+                        <label class="input-col" for="picture">立ち絵ファイル</label>
+                        <input id="picture" type="file" name="picture">
+                    </div>
+                    <div class="input-row">
+                        <input class="input-col button" type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div id="registered-panel">
+            <div class="register" id="serifs">
+                <% if (!serifs || serifs.length == 0) { %>
+                    <p> セリフが登録されていません </p>
+                <% } else { %>
+                    <div id="speaker-header">
+                        <div class="speaker-column">
+                            <span>セリフID</span>
+                        </div>
+                        <div class="speaker-column">
+                            <span>テキスト</span>
+                        </div>
+                        <div class="speaker-column">
+                            <span>タイトル</span>
+                        </div>
+                        <div class="speaker-column">
+                            <span>話者ID</span>
+                        </div>
+                    </div>
+                    <% for(const serif of serifs) { %> 
+                        <div class="serif">
+                            <div class="serif-column serif-id">
+                                <span> <%= serif.id %></span>
+                            </div>
+                            <div class="serif-column serif-text">
+                                <span> <%= serif.text %> </span>
+                            </div>
+                            <div class="serif-column serif-name">
+                                <span> <%= serif.name %></span>
+                            </div>
+                            <div class="serif-column serif-speaker">
+                                <span> <%= serif.speaker_id %></span>
+                            </div>
+
+                        </div>
+                    <% } %>
+                <%}%>
+            </div>
+
+            <div class="register" id="speakers">
+                <% if (!speakers || speakers.length == 0) { %>
+                    <p> 話者が登録されていません </p>
+                <% } else { %>
+                <div id="speaker-header">
+                    <div class="speaker-column">
+                        <span>話者ID</span>
+                    </div>
+                    <div class="speaker-column">
+                        <span>話者名</span>
+                    </div>
+                </div>
+                    <% for(const speaker of speakers) { %> 
+                        <div class="speaker">
+                            <div class="speaker-column speaker-id">
+                                <span> <%= speaker.id %></span>
+                            </div>
+                            <div class="speaker-column speaker-name">
+                                <span> <%= speaker.name %></span>
+                            </div>
+                        </div>
+                    <% } %>
+                <%}%>
+            </div>
+            <div class="register" id="pictures">
+                <% if(!pictures || pictures.length === 0) { %>
+                <p>立ち絵が登録されていません</p>
+                <%} else {%>
+                <div id="picture-header">
+                    <div class="picture-column">
+                        <span>立ち絵ID</span>
+                    </div>
+                    <div class="picture-column">
+                        <span>立ち絵</span>
+                    </div>
+                </div>
+                <% for(const picture of pictures) { %>
+                <div class="picture">
+                    <div class="picture-column picture-id">
+                        <span> <%= picture.id %></span>
+                    </div>
+                    <div class="picture-column picture-img">
+                        <img src="upload/<%=picture.path%>"></img>
+                    </div>
+                </div>
+
+                <%}%>
+                <%}%>
+
+            </div>
+        </div>
+    </body>
+</html>

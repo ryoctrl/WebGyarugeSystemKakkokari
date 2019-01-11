@@ -1,0 +1,23 @@
+{
+    "short_name": "Yukari",
+    "name": "Yukari",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "images/48yukari.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "images/96yukari.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "images/192yukari.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "start_url": "/"
+}

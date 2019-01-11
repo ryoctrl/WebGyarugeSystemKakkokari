@@ -1,0 +1,138 @@
+body {
+    overflow: hidden;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin: 0;
+}
+
+a {
+    color: #00B7FF;
+}
+
+p {
+    margin: 0;
+}
+
+#background {
+    background: url("/images/Background.jpg");
+    background-size: 30vw 100vh;
+    height: 100vh;
+    width: 30vw;
+    margin: 0 auto;
+    background-size: cover;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;/*ブラー効果でボヤけた部分を非表示*/;
+}
+
+#background:before {
+    content: '';
+    background: inherit ;
+    background-blend-mode: multiply;
+    -webkit-filter: blur(2.5px);
+    -moz-filter: blur(2.5px);
+    -o-filter: blur(2.5px);
+    -ms-filter: blur(2.5px);
+    filter: blur(2.5px);
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: -1;
+}
+
+/*
+#background:after {
+    content: '';
+    background: linear-gradient(#05FBFF, #1E00FF);
+    background-blend-mode: multiply;
+    z-index: 1;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+}
+*/
+#serif {
+    position: absolute;
+    background: rgba(100, 100, 100, 0.5);
+    width: 30vw;
+    height: 20vh;
+    bottom: 5vh;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 2em;
+}
+
+#serif #speaker-name {
+    text-align: left;
+    width: 80%;
+    margin: 5px auto;
+
+}
+
+#serif #text {
+    word-wrap: break-word;
+    line-height: 1.6em;
+    width: 18em;
+    margin: 0 auto;
+}
+
+#speaker-name {
+
+}
+
+#char {
+    text-align: center;
+    background: /*linear-gradient(45deg, #aaaaaa, #ffffff),*/url("/images/yukari.png")  no-repeat;
+    background-blend-mode: screen;
+    background-size: cover;
+    height: 100vh;
+    width: 30vw;
+}
+
+#text {
+    text-align: left;
+    overflow-y: scroll;
+    height: 15vh;
+
+}
+
+#text::-webkit-scrollbar {
+    width: 4px;
+}
+
+#text::-webkit-scrollbar-track {
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: inset 0 0 2px #777;
+}
+
+#text::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+@media screen and (max-width: 767px) {
+    #background {
+        width: 100vw;
+        background-size: 100vw 100vh;
+    }
+
+    #serif {
+        width: 100vw;
+        height: 25vh;
+        left: 0;
+        right: 0;
+        font-size: 1.5em;
+    }
+
+    #char {
+        width: 100vw;
+    }
+}
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="apple-touch-icon" href="/images/192yukari.png">
+        <link rel="apple-touch-icon" sizes="192x192" href="images/192yukari.png">
+        <link rel="apple-touch-startup-image" href="/images/192yukari.png">
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+        let serifs, speakers, pictures;
+        <% if(serifs) {%>
+            serifs = <%-serifsJson%>;
+        <%}%>
+        <% if(speakers) {%>
+            speakers = <%-speakersJson%>;
+        <%}%>
+        <% if(picturesJson) {%>
+            pictures = <%-picturesJson%>;
+        <%}%>
+    </script>
+        <script type="text/javascript" src="/javascripts/wa.js"></script>
+        <script type="text/javascript" src="/javascripts/index.js"></script>
+    </head>
+    <body>
+        <div id="background">
+            <select id="serif-select" name="serif">
+                <% if(serifs && serifs.length > 0){%>
+                <option value="-1">Stop</option>
+                <% for(const serif of serifs) { %>
+                <option value="<%=serif.path%>"><%=serif.name%> by <%= speakers[serif.speaker_id - 1].name%></option>
+                <%}%>
+                <%} else { %>
+                <option value="-1">登録されているセリフがありません.</option>
+                <%}%>
+            </select>
+            <input type="range" name="num" min="0" max="20" step="1" value="10" onchange="changeTextSpeed(this.value)">
+            <span id="speed-val">10</span>
+            <button id="playbutton"onclick="" value="Play">Play</button>
+            <div id="char"></div>
+            <div id="serif" style="display: none;">
+                <p id="speaker-name"></p>
+                <p id="text"></p>
+            </div>
+        </div>
+      </body>
+</html>
