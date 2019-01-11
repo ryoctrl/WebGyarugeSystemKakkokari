@@ -1,3 +1,4 @@
 config/config.json
 ecosystem.config.js
 node_modules/
+uploads/
