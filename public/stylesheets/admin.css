@@ -68,3 +68,20 @@ body {
 
 
 
+@media screen and (max-width: 767px) {
+    body {
+        margin: 0;
+    }
+    #register-panel {
+        flex-direction: column;
+        margin: 5px;
+    }
+    .register {
+        width: 100vw;
+    }
+
+    #registered-panel {
+        flex-direction: column;
+    }
+}
+

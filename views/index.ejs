@@ -8,52 +8,112 @@
         <link rel="apple-touch-icon" sizes="192x192" href="images/192yukari.png">
         <link rel="apple-touch-startup-image" href="/images/192yukari.png">
         <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script>
-        let serifs, speakers, pictures;
-        <% if(serifs) {%>
-            serifs = <%-serifsJson%>;
-        <%}%>
-        <% if(speakers) {%>
-            speakers = <%-speakersJson%>;
-        <%}%>
-        <% if(picturesJson) {%>
-            pictures = <%-picturesJson%>;
-        <%}%>
-    </script>
+        <link rel="stylesheet" href="/stylesheets/drawer.css" />
+        <!--AlertifyJS-->
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js" ></script>
+        <script type="text/javascript" src="/javascripts/alerts.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/alertify.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/themes/default.min.css"/>
+        <!--AlertifyJS-->
+        <script>
+            let serifs, speakers, pictures, messages = [];
+            <% if(serifs) {%>
+                serifs = <%-serifsJson%>;
+            <%}%>
+            <% if(speakers) {%>
+                speakers = <%-speakersJson%>;
+            <%}%>
+            <% if(picturesJson) {%>
+                pictures = <%-picturesJson%>;
+            <%}%>
+            <% if(messages) {%>
+                messages = <%-messages%>;
+            <%}%>
+
+        </script>
         <script type="text/javascript" src="/javascripts/wa.js"></script>
+        <script type="text/javascript" src="/javascripts/wzrecorder.js"></script>
         <script type="text/javascript" src="/javascripts/index.js"></script>
     </head>
     <body>
-        <div id="background">
-            <div id="err"></div>
-            <div id="select-elements">
-                <select id="serif-select" name="serif">
-                    <% if(serifs && serifs.length > 0){%>
-                    <option value="-1">Stop</option>
-                    <% for(const serif of serifs) { %>
-                    <option value="<%=serif.path%>"><%=serif.name%> by <%= speakers[serif.speaker_id - 1].name%></option>
-                    <%}%>
-                    <%} else { %>
-                    <option value="-1">登録されているセリフがありません.</option>
-                    <%}%>
-                </select>
-                <button id="playbutton"onclick="" value="Play">Play</button>
+        <!--MenuButton-->
+        <input type="checkbox" class="check" id="checked">
+        <label class="menu-btn" for="checked">
+            <span class="bar top"></span>
+            <span class="bar middle"></span>
+            <span class="bar bottom"></span>
+            <span class="menu-btn__text">MENU</span>
+        </label>
+        <label class="close-menu" for="checked"></label>
+        <!--MenuButton-->
+
+        <!--SideMenu-->
+        <nav class="drawer-menu">
+            <div class="settings">
+                <img id="playbutton" src="/images/play.png"></img>
+                <img id="recbutton" src="/images/rec.png"></img>
+                <div>
+                    <p style="display: inline;"> ボイロモード</p>
+                    <input type="checkbox" id="voiro-mode" style="display: inline;"></input>
+                </div>
             </div>
-            <div id="speed-elements">
-                <span class="ui-text" id="speed-text">テキスト速度:</span>
-                <span class="ui-text" id="speed-val">10</span>
+            <div class="settings">
+                <p>台詞選択</p>
+                <div class="settings-select">
+                    <select id="serif-select" name="serif">
+                        <% if(serifs && serifs.length > 0){%>
+                        <option value="-1">Stop</option>
+                        <% for(const serif of serifs) { %>
+                        <option value="<%=serif.path%>"><%=serif.name%> by <%= speakers[serif.speaker_id - 1].name%></option>
+                        <%}%>
+                        <%} else { %>
+                        <option value="-1">登録されているセリフがありません.</option>
+                        <%}%>
+                    </select>
+                </div>
+            </div>
+            <div class="settings">
+                <p>立ち絵選択</p>
+                <div class="settings-select">
+                    <select id="picture-select">
+                        <option value="-1">台詞の立ち絵を使用</option>
+                        <% const pictures = JSON.parse(picturesJson);%>
+                        <% if(picturesJson && pictures.length > 0) { %>
+                            <% for(const picture of pictures) {%>
+                                <option value="<%= picture.path %>"><%= picture.name %></option>
+                            <% }%>
+                        <% }%>
+                    </select>
+                </div>
+            </div>
+            <div class="settings">
+                <p>
+                    <span class="ui-text" id="speed-text">テキスト速度:</span>
+                    <span class="ui-text" id="speed-val">10</span>
+                </p>
                 <input id="speed-slider" type="range" name="num" min="0" max="20" step="1" value="10">
             </div>
-            <div id="volume-elements">
-                <span class="ui-text" id="volume-text">音量:</span>
-                <span class="ui-text" id="volume-val">50</span>
+            <div class="settings">
+                <p>
+                    <span class="ui-text" id="volume-text">音量:</span>
+                    <span class="ui-text" id="volume-val">50</span>
+                </p>
                 <input id="volume-slider" type="range" name="volume" min="0" max="100" step="1" value="50">
             </div>
-            <div id="char"></div>
-            <div id="serif" style="display: none;">
-                <p id="speaker-name"></p>
-                <p id="text"></p>
+            <div class="settings">
+                <a href="/serif">台詞登録</a>
             </div>
+        </nav>
+        <!--SideMenu-->
+
+        <div id="background">
+           <div class="contents">
+               <div id="char"></div>
+               <div id="serif" stype="display: none;">
+                   <p id="speaker-name"></p>
+                   <p id="text"></p>
+               </div>
+           </div>
         </div>
-      </body>
+    </body>
 </html>

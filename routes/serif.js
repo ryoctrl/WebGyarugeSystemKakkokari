@@ -14,6 +14,7 @@ const api = require('../controllers/api');
 const speakerController = require('../controllers/speakerController');
 const serifController = require('../controllers/serifController');
 const pictureController = require('../controllers/pictureController');
+const audioController = require('../controllers/audioController');
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
@@ -32,32 +33,48 @@ router.post('/speaker/create', async function(req, res, next) {
     const body = req.body;
     const name = body.name;
     if(!name) {
-        console.log('return not name');
-        res.redirect('/serif');
+        req.session.messages = [{
+            err: true,
+            message: '話者名が設定されていません'
+        }];
+        res.redirect('/');
         return;
     }
     await speakerController.registerSpeaker(name);
-    res.redirect('/serif');
+    req.session.messages = [{
+        err: false,
+        message: '新たな話者を登録しました'
+    }];
+    res.redirect('/');
 });
 
 router.post('/picture/create', upload.single('picture'), async function(req, res, next) {
     const file = req.file;
     if(!file) {
-        console.error('file not uploaded');
-        res.redirect('/serif');
+        req.session.messages = [{
+            err: true,
+            message: '立ち絵ファイルが添付されていません'
+        }];
+        res.redirect('/');
         return;
     }
 
     const body = req.body;
     const name = body.name;
     if(!name) {
-        console.error('!name');
-        res.redirect('/serif');
+        req.session.messages = [{
+            err: true,
+            message: '立ち絵タイトルが設定されていません'
+        }];
+        res.redirect('/');
         return;
     }
-
+    req.session.messages = [{
+        err: false,
+        message: '新たな立ち絵を登録しました'
+    }];
     await pictureController.registerPicture(name, file.filename);
-    res.redirect('/serif');
+    res.redirect('/');
 });
 
 router.post('/create', upload.single('audio'), async function(req, res, next) {
@@ -68,29 +85,45 @@ router.post('/create', upload.single('audio'), async function(req, res, next) {
     } else {
         const file = req.file;
         if(!file) {
-            console.error('file not uploaded');
-            res.redirect('/serif');
+            req.session.messages = [{
+                err: true,
+                message: '音声ファイルが添付されていません'
+            }]
+            res.redirect('/');
             return;
         }
+
+        const flacfile = audioController.wavConvertToFlac(file.filename);
 
         const name = body.name;
         const speakerId = body.speaker;
-        console.log(name, speakerId);
+        const pictureId = body.picture || null;
+        console.log(name, speakerId, pictureId);
         if(!name || !speakerId) {
-            console.error('!name || !speakerId');
-            res.redirect('/serif');
+            req.session.messages = [{
+                err: true,
+                message: 'タイトル又は話者IDが設定されていません'
+            }];
+            res.redirect('/');
             return;
         }
-        const text = await api.speechToText(file.filename);
+        const text = await api.speechToText(flacfile);
         if(!text) {
-            console.error('api error');
-            res.redirect('/serif');
+            req.session.messages = [{
+                err: true,
+                message: '音声認識に失敗しました'
+            }];
+            res.redirect('/');
             return;
         }
 
-        await serifController.registerSerif(name, text, file.filename, speakerId, null);
+        await serifController.registerSerif(name, text, flacfile, speakerId, pictureId);
     }
-    res.redirect('/serif');
+    req.session.messages = [{
+        err: false,
+        message: '新たなセリフを登録しました'
+    }];
+    res.redirect('/');
 });
 
 module.exports = router;

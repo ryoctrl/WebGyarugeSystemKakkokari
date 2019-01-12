@@ -6,6 +6,12 @@ const pictureController = require('../controllers/pictureController');
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
+    const sessionMessages = req.session.messages || [];
+    const messages = [];
+    while(sessionMessages.length > 0) {
+        const message = sessionMessages.shift();
+        messages.push(message);
+    }
     const serifs = await serifController.findAll();
     const speakers = await speakerController.findAll();
     const pictures = await pictureController.findAll();
@@ -15,9 +21,7 @@ router.get('/', async function(req, res, next) {
         serifsJson: JSON.stringify(serifs),
         speakersJson: JSON.stringify(speakers),
         picturesJson: JSON.stringify(pictures),
-        text:'',
-        filename: '',
-        speaker: 'ゆかり'
+        messages: JSON.stringify(messages),
     };
   res.render('index', obj);
 });

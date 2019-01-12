@@ -7,6 +7,31 @@ let strCount = 0;
 let cutCount = 0;
 let displaying = false;
 let textSpeed = 100;
+let voiroMode;
+
+const recorder = new WzRecorder({
+    onRecordingStop: function(blob) {
+        const form = new FormData();
+        form.append('data', blob);
+        form.append('voiro', voiroMode.checked);
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/upload/data');
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState != 4) return;
+            if(xhr.status === 200) {
+                location.reload();
+            } else if(xhr.status === 500) {
+                const json = JSON.parse(xhr.response);
+                displayAlert(json.message, json.err);
+            } else {
+                displayAlert('録音した音声の台詞化に失敗しました', true);
+            }
+        }
+        xhr.send(form);
+    },
+    onRecording: function(milliseconds) {
+    }
+});
 
 let textEl;
 let charaEl;
@@ -14,20 +39,35 @@ let serifSelectEl;
 let serifPanel;
 let namePanel;
 let playButton;
+let menuEl;
+let pictureSelectEl;
+let voiroText;
 
 const textWidth = 18;
 const lineCharacters = textWidth - 1;
 const pageMaxCharacters = lineCharacters * 3;
 
-
 window.addEventListener('load', function() {
+    for(const message of messages) displayAlert(message.message, message.err);
+    window.scrollTo(0, 0);
     serifSelectEl = document.getElementById('serif-select');
     serifSelectEl.addEventListener('change', loadAndPlay);
+    pictureSelectEl = document.getElementById('picture-select');
+    pictureSelectEl.addEventListener('change', changePictureSelect);
+    menuEl = document.getElementById('checked');
     charaEl = document.getElementById('char');
     textEl = document.getElementById('text');
+    voiroMode = document.getElementById('voiro-mode');
+    /*
+    voiroText = document.getElementById('voiro-text');
+    voiroMode.addEventListener('change', function(e) {
+        voiroText.innerText = e.target.checked ? 'ON' : 'OFF';
+    });
+    */
     serifPanel = document.getElementById('serif');
     namePanel = document.getElementById('speaker-name');
     playButton = document.getElementById('playbutton');
+    document.getElementById('recbutton').addEventListener('click', recToggle);
     const speedSlider = document.getElementById('speed-slider');
     speedSlider.addEventListener('input', function(e) {
         e = e.target;
@@ -46,18 +86,41 @@ window.addEventListener('load', function() {
     }, {passive: false});
 });
 
+let usePicturePath = '-1';
+
+function changePictureSelect() {
+    usePicturePath = pictureSelectEl.value;
+    if(usePicturePath == -1) {
+        if(serifSelectEl.value == -1) changeCharacter('/images/yukari.png');
+        else changeImage(serifs[serifSelectEl.selectedIndex - 1]);
+    } else {
+        changeCharacter('/upload/' + usePicturePath);
+    }
+}
+
+function recToggle() {
+    recorder.toggleRecording();
+}
+
+function closeMenu() {
+    menuEl.checked = false;
+}
+
 function loadAndPlay() {
     if(serifSelectEl.value == -1) {
         wa.stop();
         displayMessage(' ', '');
-        changeCharacter('/images/yukari.png');
+        //changeCharacter('/images/yukari.png');
+        changeCharacter('/upload/d551332d5a2bcc91733a13e6f30e8198');
         return;
     }
 
     const serif = serifs[serifSelectEl.selectedIndex - 1];
-    changeImage(serif);
+    if(usePicturePath == -1) changeImage(serif);
     wa.loadFile('upload/' + serifSelectEl.value, function(buffer){
+        displayAlert('音声のダウンロードが完了しました', false);
         playButton.addEventListener('click', function() {
+            if(serifSelectEl.value == -1) return;
             if(playing) {
                 wa.stop();
                 playing = false;
@@ -65,6 +128,7 @@ function loadAndPlay() {
 
             wa.play(buffer);
             displayMessage(speakers[serif.speaker_id - 1].name, serif.text);
+            closeMenu();
             playing = true;
         });
     });
@@ -136,7 +200,9 @@ function completeDisplay(text) {
 
 function changeCharacter(url) {
     if(!url) return;
-    charaEl.style.backgroundImage = `url("${url}")`;
+    const cssText = `url("${url}")`;
+    if(charaEl.style.backgroundImage === cssText) return;
+    charaEl.style.backgroundImage = cssText;
 }
 
 function changeImage(serif) {

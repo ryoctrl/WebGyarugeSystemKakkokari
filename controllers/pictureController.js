@@ -8,7 +8,7 @@ module.exports = {
                 message: 'name or path not inputted'
             };
         };
-        const existed = await models.Speaker.findOne({ where: { name: name} });
+        const existed = await models.Picture.findOne({ where: { name: name} });
         if(existed) {
             return {
                 err: true,

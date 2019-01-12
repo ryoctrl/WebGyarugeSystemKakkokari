@@ -1,10 +1,10 @@
 body {
-    overflow: hidden;
+    height: 90vh;
+/*    overflow: hidden;*/
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     margin: 0;
     -webkit-tap-highlight-color: transparent;
 }
-
 
 a {
     color: #00B7FF;
@@ -12,6 +12,72 @@ a {
 
 p {
     margin: 0;
+}
+
+nav {
+    color: #fff;
+}
+/*
+#select-elements {
+    margin-top: 5px;
+}
+*/
+.settings {
+    margin: 10px;
+}
+
+.settings img{
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.settings-select {
+    width: 10vw;
+     overflow: hidden;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  position: relative;
+  border-radius: 0.2em;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 0 #AAA;
+  background-color: white;
+}
+
+.settings select {
+    -moz-appearance: none;
+  -webkit-appearance: none;
+  -o-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: none transparent;
+  vertical-align: middle;
+  font-size: inherit;
+  color: black;
+  box-sizing: content-box;
+}
+
+.settings-select > select {
+  width: 130%;
+  padding: 0.6em 2.4em 0.6em 0.6em;
+  font-size: 1rem;
+}
+
+.settings input[type="range"] {
+    width: 10vw;
+}
+
+.settings p {
+    font-size: 1.5em;
+
+}
+
+.settings input {
+    display: block;
 }
 
 #background {
@@ -43,6 +109,15 @@ p {
     z-index: -1;
 }
 
+#settings-panel {
+    position: absolute;
+}
+
+#settings-panel img {
+    max-width: 50px;
+    max-height: 50px;
+}
+
 /*
 #background:after {
     content: '';
@@ -61,7 +136,7 @@ p {
     background: rgba(100, 100, 100, 0.5);
     width: 30vw;
     height: 20vh;
-    bottom: 5vh;
+    bottom: 12vh;
     color: #ffffff;
     text-align: center;
     vertical-align: middle;
@@ -88,7 +163,7 @@ p {
 
 #char {
     text-align: center;
-    background: /*linear-gradient(45deg, #aaaaaa, #ffffff),*/url("/images/yukari.png")  no-repeat;
+    background: /*linear-gradient(45deg, #aaaaaa, #ffffff),*/url(/upload/d551332d5a2bcc91733a13e6f30e8198)  no-repeat;
     background-blend-mode: screen;
     background-size: cover;
     height: 100vh;
@@ -124,6 +199,13 @@ p {
     line-height: 100%;
 }
 
+.ui-button {
+    width: 50px;
+    height: 50px;
+
+
+}
+
 @media screen and (max-width: 767px) {
     input {
         width: 50vw;
@@ -151,6 +233,11 @@ p {
     #char {
         width: 100vw;
     }
-
+    .settings-select {
+        width: 45vw;
+    }
+    .settings input[type="range"] {
+        width: 45vw;
+    }
 }
 

@@ -26,21 +26,24 @@ module.exports = {
         };
         console.log('requesting client');
         const data = await client.recognize(request).catch(err => {
-            console.log('error!');
             console.error('ERROR:', err);
-            return null;
+            return {
+                err: true,
+                message: err.toString()
+            };
         });
 
-        if(!data) {
-            console.log('return null');
-            return null;
+        if(data.err) {
+            return data;
         }
 
         console.log(data);
         const res = data[0];
         const transcription = res.results.map(result => result.alternatives[0].transcript).join('\n');
-        console.log('returning transcription');
-        console.log(transcription);
+        if(transcription  == '') return {
+            err: true,
+            message: '音声を文章として認識できませんでした'
+        }
         return transcription;
     }
 }
