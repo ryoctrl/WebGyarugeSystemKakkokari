@@ -8,12 +8,14 @@ let cutCount = 0;
 let displaying = false;
 let textSpeed = 100;
 let voiroMode;
+let voiceroids;
 
 const recorder = new WzRecorder({
     onRecordingStop: function(blob) {
         const form = new FormData();
         form.append('data', blob);
         form.append('voiro', voiroMode.checked);
+        form.append('voice', voiceroids.value);
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/upload/data');
         xhr.onreadystatechange = function() {
@@ -58,12 +60,12 @@ window.addEventListener('load', function() {
     charaEl = document.getElementById('char');
     textEl = document.getElementById('text');
     voiroMode = document.getElementById('voiro-mode');
-    /*
-    voiroText = document.getElementById('voiro-text');
+    voiceroids = document.getElementById('voiceoids');
+    //voiroText = document.getElementById('voiro-text');
     voiroMode.addEventListener('change', function(e) {
-        voiroText.innerText = e.target.checked ? 'ON' : 'OFF';
+        voiceroids.disabled = !e.target.checked;
+        //voiroText.innerText = e.target.checked ? 'ON' : 'OFF';
     });
-    */
     serifPanel = document.getElementById('serif');
     namePanel = document.getElementById('speaker-name');
     playButton = document.getElementById('playbutton');
@@ -91,7 +93,7 @@ let usePicturePath = '-1';
 function changePictureSelect() {
     usePicturePath = pictureSelectEl.value;
     if(usePicturePath == -1) {
-        if(serifSelectEl.value == -1) changeCharacter('/images/yukari.png');
+        if(serifSelectEl.value == -1) changeCharacter('/upload/df0afcbfa92999b656b76d00c9c4a726');
         else changeImage(serifs[serifSelectEl.selectedIndex - 1]);
     } else {
         changeCharacter('/upload/' + usePicturePath);
@@ -127,7 +129,7 @@ function loadAndPlay() {
             }
 
             wa.play(buffer);
-            displayMessage(speakers[serif.speaker_id - 1].name, serif.text);
+            displayMessage(getSpeakerById(serif.speaker_id).name, serif.text);
             closeMenu();
             playing = true;
         });
@@ -207,6 +209,20 @@ function changeCharacter(url) {
 
 function changeImage(serif) {
     if(!serif.picture_id) return;
-    changeCharacter('/upload/' + pictures[serif.picture_id - 1].path);
+    const picture = getPictureById(serif.picture_id);
+    if(!picture) return;
+    changeCharacter('/upload/' + picture.path);
+}
+
+function getPictureById(id) {
+    for(const picture of pictures) {
+        if(picture.id === id) return picture;
+    }
+}
+
+function getSpeakerById(id) {
+    for(const speaker of speakers) {
+        if(speaker.id === id) return speaker;
+    }
 }
 

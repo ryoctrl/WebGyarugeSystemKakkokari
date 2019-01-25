@@ -20,6 +20,14 @@ module.exports = {
         return await models.Serif.create(obj)
 
     },
+    deleteById: async function(id) {
+        if(!id) return;
+        return await models.Serif.destroy({
+            where: {
+                id: id
+            }
+        });
+    },
     findAll: async function() {
         return await models.Serif.findAll();
     },

@@ -27,6 +27,10 @@ module.exports = {
             record: record
         };
     },
+    deleteById: async function(id) {
+        if(!id) return;
+        return await models.Picture.destroy({ where: {id: id} });
+    },
     findAll: async function() {
         return await models.Picture.findAll();
     },

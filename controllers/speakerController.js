@@ -26,6 +26,14 @@ module.exports = {
             record: record
         };
     },
+    deleteById: async function(id) {
+        if(!id) return;
+        return await models.Speaker.destroy({
+            where: {
+                id: id
+            }
+        });
+    },
     findAll: async function() {
         return await models.Speaker.findAll();
     },

@@ -66,6 +66,7 @@ router.get('/:path', async (req, res, next) =>  {
 router.post('/data', upload.single('data'), async (req, res, next) => {
     const body = req.body;
     const voiroMode = body.voiro;
+    const voice = body.voice;
     const file = req.file;
     if(!file) {
         res.status(500);
@@ -84,10 +85,10 @@ router.post('/data', upload.single('data'), async (req, res, next) => {
             res.end(JSON.stringify(text));
             return;
         }
-        //ここにVoiceroid埋め込み
+
         let filename = flacname;
         if(voiroMode) {
-            voirofile = await audioController.saveToVoiceroid(text, file.filename).catch(err => { return null });
+            voirofile = await audioController.saveToVoiceroid(text, file.filename, voice).catch(err => { return null });
             if(voirofile) filename = voirofile;
         }
         await serifController.registerSerif(name, text, filename, speakerId, pictureId);

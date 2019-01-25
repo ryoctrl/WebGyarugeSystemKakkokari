@@ -77,6 +77,39 @@ router.post('/picture/create', upload.single('picture'), async function(req, res
     res.redirect('/');
 });
 
+router.get('/picture/:id/delete', async function(req, res, next) {
+    const id = req.params.id;
+    if(!id) {
+        res.redirect('/');
+        return;
+    }
+
+    await pictureController.deleteById(id);
+    res.redirect('/');
+});
+
+router.get('/speaker/:id/delete', async function(req, res, next) {
+    const id = req.params.id;
+    if(!id) {
+        res.redirect('/');
+        return;
+    }
+
+    await speakerController.deleteById(id);
+    res.redirect('/');
+});
+
+router.get('/:id/delete', async function(req, res, next) {
+    const id = req.params.id;
+    if(!id) {
+        res.redirect('/');
+        return;
+    }
+
+    await serifController.deleteById(id);
+    res.redirect('/');
+});
+
 router.post('/create', upload.single('audio'), async function(req, res, next) {
     const body = req.body;
     const id = body.id;

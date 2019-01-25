@@ -1,6 +1,14 @@
 const spawn = require('child_process').spawn;
 const request = require('request').defaults({ encoding: null});
 const fs = require('fs');
+const voiceroids = {
+    'yukari': 'YUKARI_EX',
+    'akane': 'akane',
+    'aoi': 'aoi',
+    'kiritan': 'kiritan',
+    'akari': 'akari',
+    'maki': 'TAMMY_EX'
+};
 
 module.exports = {
     wavConvertToFlac: function(filename) {
@@ -21,14 +29,16 @@ module.exports = {
         spawn('ffmpeg', options);
         return flacPath;
     },
-    saveToVoiceroid: function(text, filename) {
+    saveToVoiceroid: function(text, filename, voiceroid) {
         if(!text) return;
+        const voiro = voiceroids[voiceroid] || 'YUKARI_EX';
+        console.log('requesting voiceroid : ' + voiro);
         const voirofile = filename + '-voiro';
         const url = 'http://192.168.0.6:7180';
         const options = {
             url: url,
             form: {
-                CV: 'YUKARI_EX',
+                CV: voiro,
                 DO: 'SAVE',
                 INTONATION: 1,
                 PITCH: 1,

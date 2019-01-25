@@ -54,7 +54,19 @@
                 <img id="recbutton" src="/images/rec.png"></img>
                 <div>
                     <p style="display: inline;"> ボイロモード</p>
-                    <input type="checkbox" id="voiro-mode" style="display: inline;"></input>
+                    <input type="checkbox" id="voiro-mode" style="display: inline; width: 20px; height: 1.5em;"></input>
+                </div>
+                <div>
+                    <div class="settings-select">
+                        <select id="voiceoids" disabled>
+                            <option value="yukari">結月ゆかり</option>
+                            <option value="maki">弦巻マキ</option>
+                            <option value="akane">琴葉茜</option>
+                            <option value="aoi">琴葉葵</option>
+                            <option value="kiritan">東北きりたん</option>
+                            <option value="akari">絆星あかり</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="settings">
@@ -64,7 +76,11 @@
                         <% if(serifs && serifs.length > 0){%>
                         <option value="-1">Stop</option>
                         <% for(const serif of serifs) { %>
-                        <option value="<%=serif.path%>"><%=serif.name%> by <%= speakers[serif.speaker_id - 1].name%></option>
+                        <% let speaker %>
+                        <% for(const s of speakers) { %>
+                        <%     if(s.id === serif.speaker_id) speaker = s; %>
+                        <% }%>
+                        <option value="<%=serif.path%>"><%=serif.name%> by <% if(speaker) { %> <%= speaker.name %> <% } %></option>
                         <%}%>
                         <%} else { %>
                         <option value="-1">登録されているセリフがありません.</option>

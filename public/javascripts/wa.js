@@ -55,8 +55,6 @@
         onAudioProcess: function(e) {
             if(!this.recording) return;
             recordData.push(new Float32Array(e.inputBuffer.getChannelData(0)));
-
-
         },
         successFunc: function(stream, self) {
             const context = self.context;
@@ -159,7 +157,7 @@
             if(typeof buffer === 'string') {
                 buffer = this._buffers[buffer];
                 if(!buffer) {
-                    console.error('ファイルが容易できていません!');
+                    console.error('ファイルが用意できていません!');
                     return;
                 }
             }
