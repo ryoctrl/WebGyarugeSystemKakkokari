@@ -93,7 +93,8 @@ let usePicturePath = '-1';
 function changePictureSelect() {
     usePicturePath = pictureSelectEl.value;
     if(usePicturePath == -1) {
-        if(serifSelectEl.value == -1) changeCharacter('/upload/df0afcbfa92999b656b76d00c9c4a726');
+        //if(serifSelectEl.value == -1) changeCharacter('/upload/df0afcbfa92999b656b76d00c9c4a726');
+        if(serifSelectEl.value == -1) changeCharacter('/images/yukari.png');
         else changeImage(serifs[serifSelectEl.selectedIndex - 1]);
     } else {
         changeCharacter('/upload/' + usePicturePath);
@@ -112,8 +113,8 @@ function loadAndPlay() {
     if(serifSelectEl.value == -1) {
         wa.stop();
         displayMessage(' ', '');
-        //changeCharacter('/images/yukari.png');
-        changeCharacter('/upload/d551332d5a2bcc91733a13e6f30e8198');
+        changeCharacter('/images/yukari.png');
+        //changeCharacter('/upload/d551332d5a2bcc91733a13e6f30e8198');
         return;
     }
 

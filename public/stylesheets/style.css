@@ -163,8 +163,8 @@ nav {
 
 #char {
     text-align: center;
-    /*background: linear-gradient(45deg, #aaaaaa, #ffffff),url(/upload/d551332d5a2bcc91733a13e6f30e8198)  no-repeat;*/
-    background: url(/upload/df0afcbfa92999b656b76d00c9c4a726) no-repeat;
+    background: url(/images/yukari.png)  no-repeat;
+    /*background: url(/upload/df0afcbfa92999b656b76d00c9c4a726) no-repeat;*/
     background-blend-mode: screen;
     background-size: cover;
     height: 100vh;
